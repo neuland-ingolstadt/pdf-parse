@@ -1,9 +1,10 @@
 const Fs = require('fs');
+const Path = require('path');
 const Pdf = require('./lib/pdf-parse.js');
 
 module.exports = Pdf;
 
-let isDebugMode = !module.parent; 
+let isDebugMode = require.main === module; 
 
 //process.env.AUTO_KENT_DEBUG
 
@@ -12,7 +13,7 @@ let isDebugMode = !module.parent;
 if (isDebugMode) {
 
     let PDF_FILE = './test/data/05-versions-space.pdf';
-    let dataBuffer = Fs.readFileSync(PDF_FILE);
+    let dataBuffer = Fs.readFileSync(Path.resolve(__dirname, PDF_FILE));
     Pdf(dataBuffer).then(function(data) {
         Fs.writeFileSync(`${PDF_FILE}.txt`, data.text, {
             encoding: 'utf8',
